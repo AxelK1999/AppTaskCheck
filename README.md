@@ -33,15 +33,28 @@ La misma presenta una version que contiene como base de datos un archivo JSON [u
     - Routes : rutas especifican qué controlador y función de controlador deben ejecutarse cuando se recibe una solicitud en una URL específica. 
 
 ## Intalacion y configuracion
-- Instalar Mongo DB : https://www.mongodb.com/try/download/community
-- Instalar Node.js : https://nodejs.org
-- Clonar proyecto del repositiorio : `git clone https://github.com/AxelK1999/TaskCheck-API.git`
-- Estando posicionado en la carpeta del proyecto previamente clonado, en la terminal:
-    1. Insatalacion de dependencias: ` npm i -D `
-    2. Correr el proyecto modo desarrollo: `npm run dev` o modo produccion `npm start`
+- Instalar Mongo DB (Version utilizada 7.0.7): https://www.mongodb.com/try/download/community
+- Instalar Node.js (Version utilizada 20.11.1): https://nodejs.org
+- Posicionarse en la carpeta donde instalara el proyecto: 
+    -  Clonar proyecto del repositiorio : `git clone https://github.com/AxelK1999/AppTaskCheck.git`
+- Crear archivo `.env` en la carpeta raiz del proyecto y definir(pegar) las siguientes variables de entorno:
+  
+   URL_DOMAIN_SERVER="localhost:3000"
+   URL_DOMAIN_CLIENTE="http://localhost:3001"
+   PORT=3000
+   DB_URI="mongodb://localhost/taskchek"
+   JWT_SECRET="keySecret"
+   JWT_SECRET_VERIFYEMAIL = "keyVerifyEmail"
+  
+- Estando posicionado en la carpeta raiz del proyecto previamente clonado, en la terminal:
+    1. Insatalacion de dependencias: `npm install` o ` npm i -D `
+    2. Correr servidor express en modo desarrollo: `npm run dev` o modo produccion `npm start`
+    3. Posicionarse en la carpeta cliente e instalar dependencias react: `cd cliente` -> `npm install` 
+    4. Correr el servidor cliente en modo desarrollo: `npm run dev` o modo produccion `npm start`
 
 ## Uso 
-
+    Acceder a http://localhost:3000/api/1.0/views/login
+    
 Las peticiones pueden realizarse en extensiones como Thunder o Postman, por las rutas de los controladores:
 
 GET `http://localhost:3000/api/1.0/notes`
