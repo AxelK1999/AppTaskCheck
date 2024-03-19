@@ -1,35 +1,36 @@
 # Proyecto: AppTaskCheck
 
 **Descripcion :**
-Aplicacion web para administrar y seguir el cumplimiento de tareas y activideades a ser realizadas para el alcance de una meta u objetivo pendiente. AppTaskCheck consiste en la creacion de espacios de tabajo compuesta por secciones (para las metas y objetivos) con tarjetas de actividades que contienen listas de tareas creadas por el usuario para el cumplimiento de la actividad. Permite al usuario crear estas tarjetas con una descripcion de la actividad y a su vez asociarla con tares para el cumplimiento de la misma, asi como el desplazamiento de las trajetas entre secciones para reflejar el estado de las tarejtas en su ciclo de vida si se desease.  
+Aplicacion web para administrar y seguir el cumplimiento de tareas y actividades a ser realizadas para el alcance de una meta u objetivo pendiente. AppTaskCheck consiste en la creacion de espacios de tabajo compuesta por secciones (para las metas y objetivos) con tarjetas de actividades que contienen listas de tareas creadas por el usuario para el cumplimiento de la actividad. Permite al usuario crear estas tarjetas con una descripcion de la actividad y a su vez asociarla con tares para el cumplimiento de la misma, asi como el desplazamiento de las tarjetas entre secciones para reflejar el estado de las tarjetas en su ciclo de vida, si se desease.  
+
+![Alt text](/esquema%20y%20diseño/UI_Home.png)
 
 ## Caracterisitcas 
 
-- Registro y auntenticacion de usuarios.
-- Registro, actualizacion y consulta de notas y pendientes.
-- Gestion y posicionamiento de secciones y tarjetas.
+- Registro, actualizacion, login y auntenticacion de usuarios.
+- Control de autorizacion y origen de peticiones
+- Operaciones CRUD sobre espacio de trabajo.
 - Validacion y control de datos de entrada.
 - Encriptacion de activos criticos (password).
+- Limite de intentos de login (contra fuerza bruta)
+- Implementacion de seguridad en encabezados de peticiones(helemt)
+- Movimiento libre y deteccion de colision de tajeta.
+- Gestion y posicionamiento de tarjetas.
+- Validacion y recepcion de emils con resend
+- Otros
 
 ## Tecnologias Utilizadas
 - **Node y express**
 - **Base de datos : MongoDB** 
 - **Boostrap 5**
+- **React + Vite**
 
-## Arquitectura y patron de carpetas: 
-- Utilizacion de arquitecutra **MVC**
-- Utilizacion de arquitectura **REST** para el manejo de las rutas
-- Patron de organizacion de carpetas :
-    - Validators : se almacenan funciones encargadas de validar datos de entrada antes de que se procesen o almacenen en la base de datos. 
-    - Middleware : se almacenan funciones de middleware que se utilizan para procesar solicitudes HTTP antes de que lleguen a las rutas o controladores finales. 
-    - Helpers : funciones auxiliares o utilidades que se utilizan en varias partes de la aplicación.
-    - Config : se almacena la configuración de la aplicación (configuraciones de bases de datos, opciones de autenticación, etc.).
-    - Modelo : esquemas y modelos de datos utilizados en la aplicación. 
-    - Vista
-    - Controlador
-    - Routes : rutas especifican qué controlador y función de controlador deben ejecutarse cuando se recibe una solicitud en una URL específica. 
+## Arquitectura y patrones implementados: 
+- Arquitectura : **MVC** ,  **RESTFUL**
+- Patrones: **Factory**, **Singleton**, **Middelware**, **Observer**, **Module**, **composite**. 
 
-## Intalacion y configuracion
+
+## Instalacion y configuracion
 - Instalar Mongo DB (Version utilizada 7.0.7): https://www.mongodb.com/try/download/community
 - Instalar Node.js (Version utilizada 20.11.1 LTS): https://nodejs.org
 - Posicionarse en la carpeta donde instalara el proyecto en la terminal: 
@@ -55,6 +56,6 @@ Acceder en el navegador a :
 http://localhost:3000/api/1.0/views/login
 ~~~ 
 
-## UI (pendiente) : 
+## Diseño UI home: 
 
-![Alt text](/esquema%20y%20diseño/image.png)
+![Alt text](/esquema%20y%20diseño/Diseño_IU_Home.png)
