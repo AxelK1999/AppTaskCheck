@@ -14,7 +14,7 @@ Aplicacion web para administrar y seguir el cumplimiento de tareas y actividades
 - Encriptacion de activos criticos (password).
 - Limite de intentos de login (contra fuerza bruta)
 - Implementacion de seguridad en encabezados de peticiones(helemt)
-- Movimiento libre y deteccion de colision de tajeta.
+- Movimiento libre y deteccion de colision de tarjeta.
 - Validacion y recepcion de emils con resend
 - Otros
 
