@@ -1,0 +1,8 @@
+@echo off
+rem cambiar el nobre de la extencion de este archivo a .bat y ejecutarlo para intalar dependencias
+echo Instalando dependencias ...
+
+start /min npm install --save
+
+echo Dependencias Instaladas
+pause

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <title>Login</title>
+</head>
+<body class="bg-dark text-white">
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <header>
+        <div class="d-flex flex-row mlt-0">
+            <div class="d-inline-flex p-2 flex-grow-1">
+                <!--<img src="img/iconoMarca.png" class="mr-img-marca" alt="Icono marca" height="50" width="50">-->
+                <a href="#"><h1 class="mt-text-marca text-marca"> ☑ TaskCheck</h1></a>
+            </div>
+        </div>  
+    </header>
+
+    <section>
+        <div class="d-flex flex-row justify-content-center login-content">
+            
+            <div class='pb-5 p-3 rounded w-auto h-auto login-content-form justify-content-center'> 
+
+                <form class="needs-validation" novalidate>
+                
+                    <h1 class="mb-4">Login</h1>
+
+                    <div class='form-group'> 
+                        <label for='InputEmail1'>Direccion de email</label> 
+                        <input type='email' name="email" class='form-control inputEmail'  aria-describedby='email' required> 
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                            Ingrese un email de formato valido y registrado
+                        </div>
+                    </div>
+
+                    <div class='form-group mt-4'> 
+                        <label for='InputPassword1'>Contraseña</label> 
+                        <input type='password' name="password" class='form-control inputPassword' required> 
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                            Contraseña ingresado incorrecto.
+                        </div>
+                    </div>
+                    <hr class="mt-4">
+                    <footer class="d-flex justify-content-center mt-4">
+                        <button type='button' class='btn btn-outline-success text-light mx-5 btnStarSesion'>Iniciar Sesion</button>
+                        <button type='submit' class="btn btn-outline-primary text-light me-5 mx-5 btnCrearCuenta">Crear Cuenta</button>
+                    </footer>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class=" fixed-bottom">
+        <div class="d-flex justify-content-center bg-dark m-auto">
+            <div class = "m-item-footer me-5"><a href="" class="text-light">Desarrollador: Axel A. Kaechele</a></div>
+        </div>
+    </footer>
+    <script src="js/login.js"></script>
+</body>
+</html>

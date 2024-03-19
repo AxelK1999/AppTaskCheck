@@ -1,0 +1,5 @@
+' Este es un comentario en un archivo .vbs Cambiar la extencion a .vbs para ejecutar .bat en segundo plano
+
+Set WshShell = CreateObject("WScript.Shell")
+WshShell.Run chr(34) & "C:\Users\axelx\OneDrive\Escritorio\EjecutandoScript.bat" & Chr(34), 0
+Set WshShell = Nothing
