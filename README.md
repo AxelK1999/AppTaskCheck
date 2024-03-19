@@ -1,10 +1,7 @@
-# Proyecto: Api Task Check
+# Proyecto: AppTaskCheck
 
 **Descripcion :**
-
-Consiste en una api que permite administrar notas y listas de tareas a realizar de ususarios registrados previemente, estas estan organizadas dentro de un espacio de trabajo que posee cada ususario, esta compuesta por secciones (creadas y tituladas por el usuaruio) que contienen tarjetas, cada una de ellas con notas y listas de tareas correspondientes a la vinculadas y creadas para el cumplimiento de la actividad que represente esa tarjeta en particular. 
-
-La misma presenta una version que contiene como base de datos un archivo JSON [url + "J"] y otra como base de datos a MongoDB [url + "M"].  
+Aplicacion web para administrar y seguir el cumplimiento de tareas y activideades a ser realizadas para el alcance de una meta u objetivo pendiente. AppTaskCheck consiste en la creacion de espacios de tabajo compuesta por secciones (para las metas y objetivos) con tarjetas de actividades que contienen listas de tareas creadas por el usuario para el cumplimiento de la actividad. Permite al usuario crear estas tarjetas con una descripcion de la actividad y a su vez asociarla con tares para el cumplimiento de la misma, asi como el desplazamiento de las trajetas entre secciones para reflejar el estado de las tarejtas en su ciclo de vida si se desease.  
 
 ## Caracterisitcas 
 
@@ -34,7 +31,7 @@ La misma presenta una version que contiene como base de datos un archivo JSON [u
 
 ## Intalacion y configuracion
 - Instalar Mongo DB (Version utilizada 7.0.7): https://www.mongodb.com/try/download/community
-- Instalar Node.js (Version utilizada 20.11.1): https://nodejs.org
+- Instalar Node.js (Version utilizada 20.11.1 LTS): https://nodejs.org
 - Posicionarse en la carpeta donde instalara el proyecto en la terminal: 
     -  Clonar proyecto del repositiorio : `git clone https://github.com/AxelK1999/AppTaskCheck.git`
 - Crear archivo `.env` en la carpeta raiz del proyecto y definir(pegar) las siguientes variables de entorno:
