@@ -15,7 +15,6 @@ Aplicacion web para administrar y seguir el cumplimiento de tareas y actividades
 - Limite de intentos de login (contra fuerza bruta)
 - Implementacion de seguridad en encabezados de peticiones(helemt)
 - Movimiento libre y deteccion de colision de tajeta.
-- Gestion y posicionamiento de tarjetas.
 - Validacion y recepcion de emils con resend
 - Otros
 
