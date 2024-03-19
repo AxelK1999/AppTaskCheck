@@ -47,6 +47,9 @@ function FormRegisterAccount(){
         if(data && !data.result){
             setState(true);
             setMensaje(data.error);
+        }else if(data.result){
+            setState(true);
+            setMensaje("Cuenta creada con exito !! ");
         }
     }
 
