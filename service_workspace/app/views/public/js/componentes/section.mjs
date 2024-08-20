@@ -12,7 +12,6 @@ export function section(key, title, cardsFragment, functAttachEvents){
             <button type="button" data-bs-toggle="dropdown" aria-expanded="false"><h4> ≡ </h4></button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item btnDeleteSection" href="#"> Delete <img src="icons/trash3-fill.svg" class="mx-2 me-0" height="13px"> </a></li>
-              <li><a class="dropdown-item btnMoveSection" href="#"> Move </a></li>
             </ul>
           </div>
         </div>

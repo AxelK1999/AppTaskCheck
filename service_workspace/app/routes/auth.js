@@ -3,7 +3,7 @@ const router = express.Router()
 
 const rateLimit = require('express-rate-limit');
 
-const {readHostClient, sendMailChangePass, changePassword ,validateAccount, logout , registerUser, login/*, registerJSON, loginJSON*/} = require('../controlles/auth.js');
+const {readHostClient, sendMailChangePass, changePassword ,validateAccount, logout , registerUser, login} = require('../controlles/auth.js');
 const { validateOwner, validateUserExistenceForCreate } = require('../validators/users.js')
 const checkOrigin = require('../middleware/origin.js');
 

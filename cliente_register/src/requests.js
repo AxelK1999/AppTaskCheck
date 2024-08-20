@@ -13,7 +13,7 @@ export async function sendRegister(body){
         });
 
         const responseData = await response.json(); // Convertir la respuesta en JSON si es necesario
-      
+        console.log(responseData);
         return responseData;
       } catch (error) {
         console.error('Error al crear la cuanta:', error);

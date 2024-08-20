@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 //import './index.css'
-import '../../app/views/public/css/bootstrap.min.css'
+import '../public/css/bootstrap.min.css'
 import Register from './register.jsx'
 
 const urlParams = new URLSearchParams(window.location.search);

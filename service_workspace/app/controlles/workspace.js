@@ -95,6 +95,11 @@ const addWorkSpace = async function(req, res){
 
 const deleteWorkSpace = async function(req, res){
    try{
+
+      if(await countWorkSpace(req) <= 1){
+         res.status(200).json( {"result": false, "data": null} );
+         return;
+      }
       const token = req.cookies.session; 
       const tokenData = await verifyToken(token);
       const deleteWorkspace = req.body.nameWorkSpace;
@@ -111,6 +116,20 @@ const deleteWorkSpace = async function(req, res){
      httpError(res, e)
    }
 }
+
+const countWorkSpace = async function (req) {
+   
+   const token = req.cookies.session; 
+   const tokenData = await verifyToken(token);
+
+   const result = await userMongo.find(
+      { 'owner.email': tokenData.email },
+        'WorkSpaces' );
+   
+   console.log(result[0].WorkSpaces.length)     
+   return result[0].WorkSpaces.length;
+}
+
 
 const changeNameWorkSpace = async function(req, res){
    try{

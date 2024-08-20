@@ -3,7 +3,6 @@ const httpError = (res, err) => {
     res.send({ error: 'Se a producido un error en el servidor'});
 }
 
-//Errores especializados ... 
 function httpErrorEsp(res, err){
 
     res.setHeader('Content-Type', 'application/json');
@@ -11,6 +10,5 @@ function httpErrorEsp(res, err){
 
     return;
 }
-
 
 module.exports = { httpError, httpErrorEsp }

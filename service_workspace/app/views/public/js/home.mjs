@@ -6,7 +6,6 @@ import { modalOfCard } from './componentes/modal.mjs';
 import { readAllWorkSpace, addWorkSpace, readOwner, readWorkSpace, updateWorkSpace } from './requests.mjs';
 
 let saveStatus = "1";
-
 const SaveStatus ={
   STATES: {"SAVE":"1","SAVING":"2", "CHANGE":"3","ERROR":"4" },
   subscribers:[],
@@ -31,7 +30,6 @@ const SaveStatus ={
   }
 }
 
-
 //                                 ---------- EVENTOS ----------
 
 //Movimineto de una tarjeta de posicion de dentro de una misma seccion o hacia otra
@@ -48,6 +46,8 @@ function handleClickMoveComponent(event,componente, funcExecuteMoving, argumento
       componente.style = "position:absolute";
       componente.style.left = newMouseX + "px";
       componente.style.top = newMouseY + "px";
+      componente.style.width = "200px";
+      componente.classList.add("text-truncate");
       //---------------------------------------
 
       funcExecuteMoving(componente, argumentosFuncExecute);
@@ -55,15 +55,19 @@ function handleClickMoveComponent(event,componente, funcExecuteMoving, argumento
       //--------------------------------------
       componente.setAttribute("moving",true);
   };
+
   document.addEventListener("mousemove", moveComponent);
   document.addEventListener("mouseup", () => {
-      //componente.setAttribute("moving",false);
-      //Restablece a la posicion original
-      //componente.setAttribute("style","top:0px; left:0px;");
-      // Remover los listeners cuando se suelta el botón del mouse
       document.removeEventListener("mousemove", moveComponent);
   });
 
+}
+function resetBordersCordsInSection(section){
+  let cards = section.querySelectorAll(".card");
+  cards.forEach( C =>{
+      C.style.borderTop = "none";
+      C.style.borderBottom = "none";
+  });
 }
 function handleDetermineCardPositionInMoving(componente, arg){
 
@@ -75,6 +79,7 @@ function handleDetermineCardPositionInMoving(componente, arg){
 
   //Busca seccion con quien colisiona
   sections.forEach(s=>{
+    resetBordersCordsInSection(s);
     let result = detecteCollision(componente, s);
     if(result.collision){
         currentSection.component = s;
@@ -84,64 +89,58 @@ function handleDetermineCardPositionInMoving(componente, arg){
       }
   });
   
-  if(currentSection.component){
-    currentSection.component.classList.add('shadow-lg');
-
-    //Busca cards dentro de la seccion con la que colisiono y determinar con cual de ellas tambien lo hace
-    let cards = currentSection.component.querySelectorAll(".card");
-    if(cards.length == 0){
-
-        componente.setAttribute("keyCardCollision", null);
-        componente.setAttribute("posCardCollision", null);
-        componente.setAttribute("keySectionCollision",currentSection.component.getAttribute("key"));
-        return;
-    }
-    cards.forEach( C =>{
-      
-      let result = detecteCollision(componente, C);
-    
-      if(result.collision){
-        if(keySeccionOfCard == currentSection.component.getAttribute("key")
-          && componente.getAttribute("key") == C.getAttribute("key")){
-            return;
-        }
-
-        let posicion = determineIfPosInferiorOrSuperior(C, componente);
-
-        if(posicion == "above"){
-          C.style.borderTop  = "8px solid #E2B81B";
-          C.style.borderBottom = "none";
-
-        }else if(posicion == "under"){
-          C.style.borderTop = "none";
-          C.style.borderBottom = "8px solid #E2B81B";
+  if(!currentSection.component){ return; }
   
-        }
-        //key con card que colisiona y si esta por encima o debajo para insertar card en section
-        componente.setAttribute("keyCardCollision", C.getAttribute("key"));
-        componente.setAttribute("posCardCollision", posicion);
-        componente.setAttribute("keySectionCollision",currentSection.component.getAttribute("key"));
-
-      }else{
-        C.style.borderTop = "none";
-        C.style.borderBottom = "none";
-      }
-    });
+  currentSection.component.classList.add('shadow-lg');
+  //Busca cards dentro de la seccion con la que colisiono y determinar con cual de ellas tambien lo hace
+  let cards = currentSection.component.querySelectorAll(".card");
+  if(cards.length == 0){
+    componente.setAttribute("keyCardCollision", null);
+    componente.setAttribute("posCardCollision", null);
+    componente.setAttribute("keySectionCollision",currentSection.component.getAttribute("key"));
+    return;
   }
+  
+  cards.forEach( C =>{
+    let result = detecteCollision(componente, C);
+     
+    if(!result.collision){
+      return
+    }
+      
+    if(keySeccionOfCard == currentSection.component.getAttribute("key")
+      && componente.getAttribute("key") == C.getAttribute("key")){
+      return;
+    }
+
+    let posicion = determineIfPosInferiorOrSuperior(C, componente);
+
+    if(posicion == "above"){
+      C.style.borderTop  = "8px solid #E2B81B";
+      C.style.borderBottom = "none";
+    }else if(posicion == "under"){
+      C.style.borderTop = "none";
+      C.style.borderBottom = "8px solid #E2B81B";
+    }
+
+    //key con card que colisiona y si esta por encima o debajo para insertar card en section
+    if(componente.getAttribute("key") !== C.getAttribute("key") /* OR seccion entre componentes y C distintas*/ ){
+      componente.setAttribute("keyCardCollision", C.getAttribute("key"));
+      componente.setAttribute("posCardCollision", posicion);
+      componente.setAttribute("keySectionCollision", currentSection.component.getAttribute("key") );
+    }
+  });
 }
+
+
 //Determina si se encuentra por ecnima o debajo de la tarjeta con la que colisiona
 function determineIfPosInferiorOrSuperior(CardInSection,cardSetInSection){
   
     const rectC1 = CardInSection.getBoundingClientRect();
-    //rectC.left: posicion en X.
     //scrollX: indica cuánto se ha desplazado la ventana horizontalmente desde su posición inicial.
-    //const posComponentX1  = rectC1.left + window.scrollX;
     const posComponentY1 = rectC1.top + window.scrollY;
 
     const rectC2 = cardSetInSection.getBoundingClientRect();
-    //rectC.left: posicion en X.
-    //scrollX: indica cuánto se ha desplazado la ventana horizontalmente desde su posición inicial.
-    //const posComponentX2  = rectC2.left + window.scrollX;
     const posComponentY2 = rectC2.top + window.scrollY;
 
     if(posComponentY2 < posComponentY1 + rectC1.height/2){
@@ -149,112 +148,99 @@ function determineIfPosInferiorOrSuperior(CardInSection,cardSetInSection){
     }else if(posComponentY2 > posComponentY1 + rectC1.height/2){
       return "under";
     }
-
     return "half";
+}
+
+//Impacta/inserta en la posicion preveimante determinada y especificada en atributos del mismo.
+function handleImplementPosCardInSection(card){
+  if( ! (card.getAttribute("moving") == "true") ){
+    return;
+  }
+  // seccion con la que colisiona    
+  let keySectionCollision = parseInt(card.getAttribute("keySectionCollision"));
+  let sectionCollisioned = document.querySelector(".section[key='"+ keySectionCollision +"']"); 
+
+  // card con la que colisiona
+  let keyCardCollision = parseInt(card.getAttribute("keyCardCollision")); // card con la que colisiona
+  let posUpperOrLowerRespectCardCollssion = card.getAttribute("posCardCollision");
+
+  if(!sectionCollisioned){
+    resetCard(card);//Card en movimiento a estado normal donde se encotraba.
+    return;
+  }
+
+  let cardContainerInTheSectionCollision = sectionCollisioned.querySelector(".cards-container");
+  let arrayCards = cardContainerInTheSectionCollision.querySelectorAll(".card");
+  resetCardsBorderToOriginalInSection(arrayCards);
+
+  if(arrayCards.length > 0 && keyCardCollision !== null){
+    
+    let cardCollision = null;
+    let cardColisionAfter = null;
+    let control = true;
+    let lastKeyCard
+    arrayCards.forEach(c => {
+     
+      if(parseInt(c.getAttribute("key")) == keyCardCollision){ cardCollision = c; }
+      if(parseInt(c.getAttribute("key")) > keyCardCollision && control){
+        cardColisionAfter = c; 
+        control = false;
+      }
+
+      let keyCardInSection = parseInt(c.getAttribute("key"))
+      lastKeyCard = keyCardInSection
+
+      if(posUpperOrLowerRespectCardCollssion == "above"){
+        if(keyCardCollision <= keyCardInSection ){
+          c.setAttribute("key", keyCardInSection + 1);
+        }
+      }else{
+        if(keyCardCollision < keyCardInSection ){
+          c.setAttribute("key", keyCardInSection + 1);
+        }
+      }
+
+    });
+
+    if(posUpperOrLowerRespectCardCollssion == "above"){
+      card.setAttribute("key", keyCardCollision);
+      cardContainerInTheSectionCollision.insertBefore(card, cardCollision);
+    }else{
+      if(cardColisionAfter !== null){
+        card.setAttribute("key", cardColisionAfter.getAttribute("key"));
+        cardContainerInTheSectionCollision.insertBefore(card, cardColisionAfter);
+      }else{
+        card.setAttribute("key", lastKeyCard + 1);
+        cardContainerInTheSectionCollision.append(card);
+      }
+    }
+
+  }else{
+    card.setAttribute("key", 1);
+    cardContainerInTheSectionCollision.append(card);
+  }
+  resetCard(card);
+  sectionCollisioned.classList.remove('shadow-lg');
 
 }
-//Impacta/inserta en la posicion preveimante determinada y especificada en atributos del mismo.
-function handleImplementPosCardInSection(componente){
 
-    if(componente.getAttribute("moving") == "true"){
-      
-      let keySectionCollision = parseInt(componente.getAttribute("keySectionCollision"));
-      console.log(keySectionCollision);
-      let keyCardCollision = parseInt(componente.getAttribute("keyCardCollision"));
-      let posCard = componente.getAttribute("posCardCollision");
-
-      let sectionCollisioned = document.querySelector(".section[key='"+ keySectionCollision +"']");
-      console.log("Section colisioned : ",sectionCollisioned);
-      if(sectionCollisioned){
-        let cardContainerOfSectionCollision = sectionCollisioned.querySelector(".cards-container");
-        let cardsIntoSectionCollision = cardContainerOfSectionCollision.querySelectorAll(".card");
-        console.log("Section Colision : ",sectionCollisioned," cards number : ",cardsIntoSectionCollision);
-
-        if(cardsIntoSectionCollision.length > 0 && keyCardCollision !== null){
-          cardsIntoSectionCollision.forEach(card => {
-            if(posCard == "above"){
-
-                  let keyCurrent = parseInt(card.getAttribute("key"));
-
-                  if(keyCurrent >= keyCardCollision){
-                    card.setAttribute("previousKey", keyCurrent);
-                    card.setAttribute("key",(keyCurrent+1));
-                  }
-
-            }else if(posCard == "under"){
-
-                let keyCurrent = parseInt(card.getAttribute("key"));
-                if(keyCurrent > keyCardCollision){
-                  card.setAttribute("previousKey", keyCurrent);
-                  card.setAttribute("key", (keyCurrent+1));
-                }
-            }
-          });
-
-          componente.setAttribute("previousKey",componente.getAttribute("key"));
-          if(posCard == "above"){
-
-            componente.setAttribute("key", keyCardCollision);
-            let cardExsistente = cardContainerOfSectionCollision.querySelector(".card[key='"+ (keyCardCollision + 1) +"']");
-
-            cardContainerOfSectionCollision.insertBefore( 
-              componente,  
-              cardExsistente 
-            );
-
-          }else if(posCard == "under"){
-
-            componente.setAttribute("key", keyCardCollision + 1);
-            let cardExsistente = cardContainerOfSectionCollision.querySelector(".card[key='"+ (keyCardCollision + 2) +"']");
-
-            if(cardExsistente){
-              cardContainerOfSectionCollision.insertBefore( 
-                componente,  
-                cardExsistente 
-              );
-
-            }else{
-              cardContainerOfSectionCollision.appendChild(componente);
-            }
-          }
-        }else {
-          cardContainerOfSectionCollision.appendChild(componente);
-        }
-
-        resetCardBorderToOriginal(cardsIntoSectionCollision);
-
-      }
-      //Restableciendo propiedades de la tarjeta a la previa al movimiento
+function resetCard(componente){
       componente.style.top = "0px";
       componente.style.left = "0px";
       componente.style.position = "relative";
-      componente.setAttribute("moving", false);
-      sectionCollisioned.classList.remove('shadow-lg');
-    }
+      componente.style.width = "15rem";
+      componente.classList.remove("text-truncate");
 
+      componente.setAttribute("moving", false);
 }
-function resetCardBorderToOriginal(cards){
+function resetCardsBorderToOriginalInSection(cards){
   cards.forEach(C => {
     C.style.borderTop = "none";
     C.style.borderBottom = "none";
   });
 }
-function handleClickMoveUpdateKeysOfCardsInSectionOrigin(componente){
-//Update keys de cards section dejada por la tarjeta
-let conainerCardsOrigen  = componente.parentNode.querySelectorAll(".card");
-  
-  if(conainerCardsOrigen.length > 0){
-    conainerCardsOrigen.forEach(c => {
 
-      let keyCardPrevioSection = c.getAttribute("key");
-      if(keyCardPrevioSection > componente.getAttribute("previousKey")){
-        c.setAttribute("key", parseInt(keyCardPrevioSection)-1 );
-      }
-      
-    });
-  }
 
-}
 function detecteCollision(component1, component2){
 
   const rectC1 = component1.getBoundingClientRect();
@@ -283,13 +269,8 @@ function detecteCollision(component1, component2){
 
   return {collision:false , distance: Math.sqrt(distance.X + distance.Y)};
 }
-
-
-
-
 function attachCardEventHandlers(componente){
   componente.querySelector(".btnMoveCard").addEventListener("click", (event)=>{
-    handleClickMoveUpdateKeysOfCardsInSectionOrigin(componente);
     let keyCurrentSection = componente.parentNode.getAttribute("key"); 
     handleClickMoveComponent(event,componente, handleDetermineCardPositionInMoving,[keyCurrentSection]);
   });
@@ -359,7 +340,6 @@ function attachCardEventHandlers(componente){
   });
 
 }
-
 function attachSectionEventHandlers(componente){
   let btnAddCard = componente.querySelector('[key="btnAddCard"]');
   let containerCards = componente.querySelector('.cards-container');
@@ -632,7 +612,6 @@ function loadWorkSpaceToDom(workSpace){
   const sections = document.createDocumentFragment();
 
   workSpace.sections.forEach(sect => {
-
     const cards = document.createDocumentFragment();
     if(sect.cards && sect.cards.length > 0){
       sect.cards.forEach(c =>{ 
@@ -646,7 +625,6 @@ function loadWorkSpaceToDom(workSpace){
                 let containerCheckItem = checklist.querySelector(".container-item-check");
                 let countItem = 0;
                 chl.tasks.forEach(task =>{
-                  console.log(task.task," -- ",task.check);
                   containerCheckItem.appendChild(checkItem(task.task, task.check, countItem++));
                 });
                 checkListsFragment.appendChild(checklist);

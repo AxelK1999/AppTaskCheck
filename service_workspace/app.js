@@ -31,21 +31,3 @@ createRoles();
 app.listen(PORT, () => {
     console.log('API lista por el puerto ', PORT);
 })
-
-
-/*Generar clave :    
-    openssl genpkey -algorithm RSA -out private-key.pem -aes256
-Genera la solicitud de firma de certificado (CSR): 
-    openssl req -new -key private-key.pem -out csr.pem
-Genera el certificado auto-firmado: 
-    openssl x509 -req -days 365 -in csr.pem -signkey private-key.pem -out certificate.pem
-
-const https = require('https');
-const fs = require('fs');
-
-https.createServer({
-        cert: fs.readFileSync("certificado.cert"),
-        key: fs.readFileSync("certificado.key")
-    }, app).listen(PORT,()=>{
-        console.log('API lista por el puerto ', PORT);
-    });  */

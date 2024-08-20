@@ -1,13 +1,40 @@
 const { Resend } = require("resend");
 const { createTokenVerifyEmail , verifyTokenConfirmEmail} = require('./generateToken')
 
-const resend = new Resend("re_LNDeL99L_KxZSoaDdBtE26T7sZRHjqFmK");//TODO: clave en variable de entorno
+const nodeMailer = require("nodemailer");
+
+const transporter = nodeMailer.createTransport({
+    host: "smtp.resend.com",
+    port: 465,
+    secure: true, // Use `true` for port 465, `false` for all other ports
+    auth: {
+      user: "resend",
+      pass: process.env.API_KEY_RESEND,
+    },
+  });
 
 async function sendEmailVerifyAccount(user){
-    console.log(user);
+    const token = await createTokenVerifyEmail(user);
+    let html = emailVerificationNotifyComponent(token);
+
+    const info = await transporter.sendMail({
+        from: '<welcome@apptask.proyect>', // sender address
+        to: [user.email], // list of receivers
+        subject: "TaskChekApp: Verificacion de email", // Subject line
+        //text: "Hello world?", // plain text body
+        html: html, // html body
+      });
+
+}
+
+
+/*const resend = new Resend(process.env.API_KEY_RESEND);
+
+async function sendEmailVerifyAccountV1(user){
+    
   const token = await createTokenVerifyEmail(user);
   let html = emailVerificationNotifyComponent(token);
-  console.log(user.id);
+
   const { data, error } = await resend.emails.send({
     from: "TaskChekApp@resend.dev",
     to: [user.email],
@@ -16,7 +43,7 @@ async function sendEmailVerifyAccount(user){
   });
 
   return { data, error };
-}
+}*/
 
 function emailVerificationNotifyComponent(token){
     //TODO: ver alternativa a env para el dominio

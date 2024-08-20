@@ -14,10 +14,10 @@ export function navHome(){
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Spaces</a>
                 <ul class="dropdown-menu workspaces">
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item btnAddWorkSpace text-success" href="#">Nuevo WorkSpace</a></li>
+                  <li><a class="dropdown-item btnAddWorkSpace text-success" href="#">New WorkSpace</a></li>
                 </ul>
               </li>
-              <li class="nav-item stateSave mt-2 mx-auto text-success">💾 Guardado </li>
+              <li class="nav-item stateSave mt-2 mx-auto text-success">💾 saved </li>
             </ul>
       </nav>`;
   
@@ -47,11 +47,17 @@ export function navItemWorkSpace(txt, functAttachEvents){
 export function attachNavItemWorkSpaceEvents(componente){
     componente.querySelector(".btnDeleteWorkSpace").addEventListener("click",async ()=>{
       const nameNewWorkSpace = componente.querySelector(".btnNameWorkSpace").textContent;
-      let confirmacion = confirm("¿ Estás seguro que desea eliminar este WorkSpace : "+nameNewWorkSpace+" ?");
+      let confirmacion = confirm("¿ Estás seguro que desea eliminar este WorkSpace : "+nameNewWorkSpace+" ?"
+                                +"\nNota: debe tener mas de 1 workspace creado para eliminar uno");
       if(confirmacion){
-        await deleteWorkSpace(nameNewWorkSpace);
-        componente.remove();
+        let success = await deleteWorkSpace(nameNewWorkSpace);
+        
+        if(success.result){
+          componente.remove();
+          location.reload();
+        }
       }
+      
     });
 }
 
@@ -102,10 +108,9 @@ export function navItemProfileUser(name, email){
           }
         });
   
-    let M = modal.createModal("Perfil",bodyModal, buttonSave);
+    let M = modal.createModal("Perfil", bodyModal, buttonSave);
     componente.querySelector(".modalOfItem").appendChild(M);
     componente.querySelector(".userTxt").addEventListener("click",() => modal.showModal(M));
-  
   
     buttonSave.addEventListener("click", async()=>{
       let nameUpd = bodyModal.querySelector(".name").value;

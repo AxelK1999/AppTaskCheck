@@ -74,6 +74,7 @@ const registerUser = async (req, res) => {
            roles: roles.map((role) => role._id),
            validated:true //TODO: en false al tener activo el envio de emails de validacion
         }
+
         const Account = { owner, WorkSpaces : [ 
                     {
                         "name": "WorkSpace",
@@ -81,17 +82,22 @@ const registerUser = async (req, res) => {
                     }
                 ]
             }
+        
+        console.log("Hasta la verificacion de si exsiste",owner.email);
+
         let existsUser = await UserMongo.exists({"owner.email" : owner.email});
+            
         res.setHeader('Content-Type', 'application/json');
         if(!existsUser){
 
             let user = new UserMongo(Account);
 
-           /* const { data, error } = await sendEmailVerifyAccount({"id": user.id, "email" : user.owner.email});
+            /*const { data, error } = await sendEmailVerifyAccount({"id": user.id, "email" : user.owner.email});
+            
             if(error){
                 return res.status(400).json({"result" : false, error });
             }*/
-
+            
             await user.save();
             res.status(201).json({"result" : true, "inf" : "Usuario registrado correctamente"});       
             
